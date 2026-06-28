@@ -1,2 +1,0 @@
-# my-quiz
-my-quiz

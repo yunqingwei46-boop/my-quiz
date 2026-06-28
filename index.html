@@ -1,0 +1,172 @@
+# my-quiz
+my-quiz
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👭 閨蜜默契大考驗</title>
+    
+    <script>
+        // 💡 這裡已經幫妳填好妳的正確答案囉！
+        const quizData = [
+            {
+                question: "1. 我最喜歡的手搖飲是什麼？",
+                options: ["珍珠鮮奶茶", "冰淇淋紅茶", "爆打檸檬綠", "無糖烏龍茶"],
+                correct: 0 // 珍珠鮮奶茶
+            },
+            {
+                question: "2. 我最討厭、絕對不吃的食物是什麼？",
+                options: ["香菜", "青椒", "地瓜葉", "苦瓜"],
+                correct: 2 // 地瓜葉
+            },
+            {
+                question: "3. 我心情不好時，最常做什麼事發洩？",
+                options: ["瘋狂大吃大喝", "躲在被窩睡覺", "瘋狂玩手機", "找妳（閨蜜）狂打電話抱怨"],
+                correct: 3 // 找妳（閨蜜）狂打電話抱怨
+            },
+            {
+                question: "4. 我最喜歡的網紅是誰？",
+                options: ["莫彩曦", "兔女狼", "彥婷", "眾量級"],
+                correct: 1 // 兔女狼
+            },
+            {
+                question: "5. 如果我突然中頭獎，第一個想去旅遊的國家是？",
+                options: ["日本", "韓國", "法國", "德國"],
+                correct: 3 // 德國
+            }
+        ];
+    </script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .phone-container {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 30px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 25px rgba(255, 71, 126, 0.15);
+            text-align: center;
+        }
+        h1 { color: #ff477e; font-size: 24px; margin-bottom: 5px; }
+        .progress { color: #888; font-size: 14px; margin-bottom: 25px; }
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: left;
+            line-height: 1.5;
+            background: #fff5f7;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #ff477e;
+        }
+        .option-btn {
+            background: #fff;
+            border: 2px solid #ffb3c6;
+            color: #4a4a4a;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: bold;
+        }
+        .option-btn:active {
+            background: #ffe5ec;
+            transform: scale(0.97);
+        }
+        #result-box {
+            display: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff477e;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <div id="quiz-box">
+        <h1>👭 閨蜜默契大考驗</h1>
+        <div class="progress" id="progress">第 1 / 5 題</div>
+        <div class="question" id="question-text">題目載入中...</div>
+        <div id="options-box"></div>
+    </div>
+    
+    <div id="result-box"></div>
+</div>
+
+<script>
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= quizData.length) {
+            showResult();
+            return;
+        }
+
+        const currentQuiz = quizData[currentQuestionIndex];
+        document.getElementById('progress').innerText = `第 ${currentQuestionIndex + 1} / ${quizData.length} 題`;
+        document.getElementById('question-text').innerText = currentQuiz.question;
+        
+        const optionsBox = document.getElementById('options-box');
+        optionsBox.innerHTML = '';
+
+        currentQuiz.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.innerText = option;
+            button.onclick = () => checkAnswer(index);
+            optionsBox.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedIndex) {
+        if (selectedIndex === quizData[currentQuestionIndex].correct) {
+            score += 20;
+        }
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    function showResult() {
+        document.getElementById('quiz-box').style.display = 'none';
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+
+        let feedback = "";
+        if (score === 100) {
+            feedback = `💯 100分滿分！\n\n天啊！妳真的是我的靈魂複製人！連心情不好會打給妳都知道，這輩子妳別想甩掉我了 💋`;
+        } else if (score >= 60) {
+            feedback = `✨ 得分：${score} 分！\n\n算妳及格啦！我們果然是真愛，不過看來有些小細節妳回去要再好好複習囉 😘`;
+        } else {
+            feedback = `🚨 得分：${score} 分！\n\n天哪...妳這塑膠姐妹花！今晚立刻給我出來喝手搖飲面壁思過 🥤`;
+        }
+        resultBox.innerText = feedback;
+    }
+
+    // 初始化
+    loadQuestion();
+</script>
+
+</body>
+</html>
